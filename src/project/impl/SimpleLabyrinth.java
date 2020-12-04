@@ -4,13 +4,14 @@ import project.base.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SimpleLabyrinth implements Labyrinth, DrawUnit {
     public static final int LABYRINTH_LAYER = 1;
 
     private ArrayList<Lever> levers;
     private ArrayList<Decoration> decorations;
+    private ArrayList<Key> Keys;
+    private ArrayList<Door> Doors;
 
     private ArrayList<ArrayList<MapTile>> map;
     private int exitX;
@@ -19,9 +20,11 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
     private ArrayList<Interact> interacts;
     private ArrayList<UpdateUnit> updateUnits;
 
-    public SimpleLabyrinth(ArrayList<Lever> levers, ArrayList<Decoration> decorations, ArrayList<ArrayList<MapTile>> map, int exitX, int exitY) {
+    public SimpleLabyrinth(ArrayList<Lever> levers, ArrayList<Decoration> decorations, ArrayList<Key> keys, ArrayList<Door> doors, ArrayList<ArrayList<MapTile>> map, int exitX, int exitY) {
         this.levers = levers;
         this.decorations = decorations;
+        this.Keys = keys;
+        this.Doors = doors;
         this.map = map;
         this.exitX = exitX;
         this.exitY = exitY;
@@ -34,6 +37,10 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
         updateUnits = new ArrayList<>();
         for (Decoration d: decorations) {
             updateUnits.add(d);
+        }
+
+        for (Door d: Doors) {
+            getMapTile(d.getX(), d.getY()).setWalkable(false);
         }
     }
 

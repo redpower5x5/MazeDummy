@@ -146,7 +146,41 @@ public class SimpleBuilder implements Builder {
 
         ArrayList<Lever> levers = readLevers(levelName);
         ArrayList<Decoration> decorations = readDecorations(levelName);
-        return new SimpleLabyrinth(levers, decorations, map, eX, eY);
+        ArrayList<Key> keys = readKeys(levelName);
+        ArrayList<Door> doors = readDoors(levelName);
+        return new SimpleLabyrinth(levers, decorations, keys, doors, map, eX, eY);
+    }
+
+    private ArrayList<Door> readDoors(String levelName) {
+        ArrayList<Door> doors = new ArrayList<>();
+        try (FileReader r = new FileReader("data/" + levelName + "/doors.txt")) {
+            Scanner sc =  new Scanner(r);
+            while (sc.hasNext()) {
+                doors.add(
+                        new SimpleDoor(
+                                sc.next().charAt(0),
+                                sc.next().charAt(0),
+                                sc.next().charAt(0),
+                                sc.nextInt(),
+                                sc.nextInt(),
+                                sc.nextInt()
+                        )
+
+                );
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return doors;
+    }
+
+    private ArrayList<Key> readKeys(String levelName) {
+        return null;
     }
 
     private ArrayList<Decoration> readDecorations(String levelName) {

@@ -25,6 +25,7 @@ public class SimpleMapTile implements MapTile {
         this.walkable = walkable;
     }
 
+
     @Override
     public int getX() {
         return x;
@@ -43,4 +44,9 @@ public class SimpleMapTile implements MapTile {
     }
     @Override
     public boolean walkable() { return walkable; }
+    @Override
+    public void setWalkable(boolean b) {
+        this.walkable = b;
+    }
+
 }

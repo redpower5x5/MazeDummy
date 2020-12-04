@@ -31,11 +31,6 @@ public class SimpleKey implements Key {
     }
 
     @Override
-    public boolean interact() {
-        return false;
-    }
-
-    @Override
     public String getLastMessage() {
         String s = "Найден ключ "+code;
         return null;
