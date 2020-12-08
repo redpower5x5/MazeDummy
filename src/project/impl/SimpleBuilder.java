@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -148,7 +149,35 @@ public class SimpleBuilder implements Builder {
         ArrayList<Decoration> decorations = readDecorations(levelName);
         ArrayList<Key> keys = readKeys(levelName);
         ArrayList<Door> doors = readDoors(levelName);
-        return new SimpleLabyrinth(levers, decorations, keys, doors, map, eX, eY);
+        ArrayList<Treasure> treasures = readTreasures(levelName);
+        return new SimpleLabyrinth(levers, decorations, keys, doors, treasures, map, eX, eY);
+    }
+
+    private ArrayList<Treasure> readTreasures(String levelName) {
+        ArrayList<Treasure> treasures = new ArrayList<>();
+        try (FileReader r = new FileReader("data/" + levelName + "/treasures.txt")) {
+            Scanner sc =  new Scanner(r);
+            while (sc.hasNext()) {
+                treasures.add(
+                        new SimpleTreasure(
+                                sc.next(),
+                                sc.next().charAt(0),
+                                sc.nextInt(),
+                                sc.nextInt(),
+                                sc.nextInt()
+                        )
+
+                );
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return treasures;
     }
 
     private ArrayList<Door> readDoors(String levelName) {
@@ -180,7 +209,30 @@ public class SimpleBuilder implements Builder {
     }
 
     private ArrayList<Key> readKeys(String levelName) {
-        return null;
+        ArrayList<Key> keys = new ArrayList<>();
+        try (FileReader r = new FileReader("data/" + levelName + "/keys.txt")) {
+            Scanner sc =  new Scanner(r);
+            while (sc.hasNext()) {
+                keys.add(
+                        new SimpleKey(
+                                sc.next().charAt(0),
+                                sc.next().charAt(0),
+                                sc.nextInt(),
+                                sc.nextInt(),
+                                sc.nextInt()
+                        )
+
+                );
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return keys;
     }
 
     private ArrayList<Decoration> readDecorations(String levelName) {

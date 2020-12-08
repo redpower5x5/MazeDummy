@@ -1,8 +1,6 @@
 package project.impl;
 
-import project.base.DrawProcessor;
-import project.base.InventaryItem;
-import project.base.Key;
+import project.base.*;
 
 public class SimpleKey implements Key {
 
@@ -32,8 +30,7 @@ public class SimpleKey implements Key {
 
     @Override
     public String getLastMessage() {
-        String s = "Найден ключ "+code;
-        return null;
+        return "Найден ключ "+code;
     }
 
     @Override
@@ -58,11 +55,30 @@ public class SimpleKey implements Key {
 
     @Override
     public InventaryItem getItem() {
-        return null;
+        System.out.println(getLastMessage());
+        return this;
     }
 
     @Override
     public String getName() {
         return "Ключ "+code;
+    }
+
+    @Override
+    public boolean performAction(GameStage gameStage) {
+        Player player = gameStage.getPlayer();
+        for (Door door: gameStage.getLabyrinth().getDoors()) {
+            if(player.getX()+1 == door.getX()&& player.getY() == door.getY()) {
+               return door.open(this);
+            } else if (player.getX()-1 == door.getX()&& player.getY() == door.getY()) {
+                return door.open(this);
+            } else if (player.getX() == door.getX()&& player.getY()+1 == door.getY()) {
+                return door.open(this);
+            }else if (player.getX() == door.getX()&& player.getY()-1 == door.getY()) {
+                return door.open(this);
+            }
+        }
+        System.out.println("Нет двери поблизости!");
+        return false;
     }
 }

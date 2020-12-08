@@ -25,11 +25,25 @@ public class SimpleDoor implements Door {
 
 
     @Override
-    public void open(Key key) {
+    public boolean open(Key key) {
         if(key.getCode() == code) {
             isOpen = !isOpen;
             System.out.println("Ключ подошел, дверь открыта!");
-        } else System.out.println("Этот ключ не подходит");
+            return true;
+        } else {
+            System.out.println("Этот ключ не подходит. Нужен ключ:"+getCode());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    @Override
+    public char getCode() {
+        return code;
     }
 
     @Override

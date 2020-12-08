@@ -11,22 +11,23 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
     private ArrayList<Lever> levers;
     private ArrayList<Decoration> decorations;
     private ArrayList<Key> Keys;
-    private ArrayList<Door> Doors;
+    private ArrayList<Door> doors;
+    private ArrayList<Treasure> treasures;
 
     private ArrayList<ArrayList<MapTile>> map;
     private int exitX;
     private int exitY;
 
-    private Inventary inventary;
-
     private ArrayList<Interact> interacts;
     private ArrayList<UpdateUnit> updateUnits;
+    private  ArrayList<InteractInventary> pickable;
 
-    public SimpleLabyrinth(ArrayList<Lever> levers, ArrayList<Decoration> decorations, ArrayList<Key> keys, ArrayList<Door> doors, ArrayList<ArrayList<MapTile>> map, int exitX, int exitY) {
+    public SimpleLabyrinth(ArrayList<Lever> levers, ArrayList<Decoration> decorations, ArrayList<Key> keys, ArrayList<Door> doors, ArrayList<Treasure> treasures, ArrayList<ArrayList<MapTile>> map, int exitX, int exitY) {
         this.levers = levers;
         this.decorations = decorations;
         this.Keys = keys;
-        this.Doors = doors;
+        this.doors = doors;
+        this.treasures = treasures;
         this.map = map;
         this.exitX = exitX;
         this.exitY = exitY;
@@ -41,9 +42,14 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
             updateUnits.add(d);
         }
 
-        for (Door d: Doors) {
-            getMapTile(d.getX(), d.getY()).setWalkable(false);
+        pickable = new ArrayList<>();
+        for (Key key: keys) {
+            pickable.add(key);
         }
+        for (Treasure tr: treasures) {
+            pickable.add(tr);
+        }
+
     }
 
     @Override
@@ -83,6 +89,12 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
         for (Decoration decoration: decorations) {
             processor.addTile(decoration);
         }
+        for (Door door: doors) {
+            processor.addTile(door);
+        }
+        for (InteractInventary pick: pickable) {
+            processor.addTile(pick);
+        }
     }
 
     @Override
@@ -92,4 +104,26 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
 
     @Override
     public List<UpdateUnit> getUpdateUnits() { return updateUnits; }
+
+    @Override
+    public List<InteractInventary> getPickable() {
+        return pickable;
+    }
+
+    @Override
+    public void removePickable(InteractInventary item) {
+        pickable.remove(item);
+    }
+
+    @Override
+    public List<Door> getDoors() {
+        return doors;
+    }
+
+    @Override
+    public void updateDoors() {
+        for (Door d: doors) {
+            getMapTile(d.getX(), d.getY()).setWalkable(d.isOpen());
+        }
+    }
 }

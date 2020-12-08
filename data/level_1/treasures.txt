@@ -1,0 +1,2 @@
+Gold G 16 2 5
+Titanium P 5 2 5

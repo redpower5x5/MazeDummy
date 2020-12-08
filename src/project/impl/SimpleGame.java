@@ -13,6 +13,7 @@ public class SimpleGame implements Game {
     private Builder builder;
     private ArrayList<String> levels;
     private GameStage currentLevel;
+    private Inventary inventary;
 
     public SimpleGame(DrawProcessor drawProcessor, Builder builder) {
         this.drawProcessor = drawProcessor;
@@ -31,14 +32,14 @@ public class SimpleGame implements Game {
             System.out.println("Что-то пошло не так при чтении названий уровней...");
             return;
         }
-
+        inventary = new SimpleInventary();
         for (String levelName: levels) {
             currentLevel = builder.build(levelName);
             System.out.println("Добро пожаловать на уровень " + levelName);
             while (!levelComplete())
             {
                 updateAll();
-
+                currentLevel.getLabyrinth().updateDoors();
                 currentLevel.getLabyrinth().addToDrawProcessor(drawProcessor);
                 currentLevel.getPlayer().addToDrawProcessor(drawProcessor);
 
@@ -88,11 +89,15 @@ public class SimpleGame implements Game {
                 break;
             case "e":
                 showInventary();
+                break;
         }
     }
 
     private void showInventary() {
-        //TODO: add drwing inventary
+        System.out.println(inventary.drawInventary());
+        Scanner scanner = new Scanner(System.in);
+        int num = scanner.nextInt();
+        inventary.selectAndUseItemAt(num-1, currentLevel);
     }
 
     private void interactProcess() {
@@ -102,6 +107,13 @@ public class SimpleGame implements Game {
                 boolean interactResult = interact.interact();
                 //if (!interactResult)
                 System.out.println(interact.getLastMessage());
+                return;
+            }
+        }
+        for (InteractInventary pickable: currentLevel.getLabyrinth().getPickable()) {
+            if(player.getX() == pickable.getX() && player.getY() == pickable.getY()) {
+                inventary.addToInventary(pickable.getItem());
+                currentLevel.getLabyrinth().removePickable(pickable);
                 return;
             }
         }
