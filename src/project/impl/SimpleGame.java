@@ -53,7 +53,7 @@ public class SimpleGame implements Game {
     }
 
     private void playerCommandProcess() {
-        System.out.println("Введите команду (u/d/l/r/t)");
+        System.out.println("Введите команду (u/d/l/r/t/e)");
         Scanner scanner = new Scanner(System.in);
         String com = scanner.nextLine();
         Player player = currentLevel.getPlayer();
@@ -86,7 +86,13 @@ public class SimpleGame implements Game {
             case "t":
                 interactProcess();
                 break;
+            case "e":
+                showInventary();
         }
+    }
+
+    private void showInventary() {
+        //TODO: add drwing inventary
     }
 
     private void interactProcess() {
@@ -96,6 +102,7 @@ public class SimpleGame implements Game {
                 boolean interactResult = interact.interact();
                 //if (!interactResult)
                 System.out.println(interact.getLastMessage());
+                return;
             }
         }
     }

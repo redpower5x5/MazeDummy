@@ -17,6 +17,8 @@ public class SimpleLabyrinth implements Labyrinth, DrawUnit {
     private int exitX;
     private int exitY;
 
+    private Inventary inventary;
+
     private ArrayList<Interact> interacts;
     private ArrayList<UpdateUnit> updateUnits;
 

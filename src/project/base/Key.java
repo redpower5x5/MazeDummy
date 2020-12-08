@@ -1,5 +1,5 @@
 package project.base;
 
-public interface Key extends DrawUnit, InteractInventary {
+public interface Key extends DrawUnit, InteractInventary, InventaryItem {
     char getCode();
 }

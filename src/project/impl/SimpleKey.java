@@ -60,4 +60,9 @@ public class SimpleKey implements Key {
     public InventaryItem getItem() {
         return null;
     }
+
+    @Override
+    public String getName() {
+        return "Ключ "+code;
+    }
 }
